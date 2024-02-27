@@ -3,21 +3,20 @@ package com.gwj.cems.pojo.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.gwj.common.entity.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
 /**
- * <p>
  * 赛事
- * </p>
  *
  * @author 
  * @since 2024-02-27
  */
-@Getter
-@Setter
+
+@EqualsAndHashCode(callSuper = true)
+@Data
 @TableName("CAMPUS_EVENT_MANAGEMENT.EVENT")
 public class Event extends BaseEntity {
 

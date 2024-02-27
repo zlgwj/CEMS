@@ -3,19 +3,18 @@ package com.gwj.cems.pojo.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.gwj.common.entity.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
- * <p>
  * 比赛项目
- * </p>
  *
  * @author 
  * @since 2024-02-27
  */
-@Getter
-@Setter
+
+@EqualsAndHashCode(callSuper = true)
+@Data
 @TableName("CAMPUS_EVENT_MANAGEMENT.PROGRAM")
 public class Program extends BaseEntity {
 
@@ -37,13 +36,13 @@ public class Program extends BaseEntity {
      * 参赛者性别限制
      */
     @TableField("GENDER_LIMIT")
-    private String genderLimit;
+    private Integer genderLimit;
 
     /**
      * 赛赛者人数限制
      */
     @TableField("ENTRANTS_LIMIT")
-    private String entrantsLimit;
+    private Integer entrantsLimit;
 
     /**
      * 裁判ID

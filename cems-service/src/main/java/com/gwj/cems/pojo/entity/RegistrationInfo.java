@@ -3,20 +3,20 @@ package com.gwj.cems.pojo.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.gwj.common.entity.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
- * <p>
  * 报名信息
- * </p>
  *
  * @author 
  * @since 2024-02-27
  */
-@Getter
-@Setter
+@EqualsAndHashCode(callSuper = true)
+@Data
 @TableName("CAMPUS_EVENT_MANAGEMENT.REGISTRATION_INFO")
+@Accessors(chain = true)
 public class RegistrationInfo extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -26,6 +26,9 @@ public class RegistrationInfo extends BaseEntity {
      */
     @TableField("USER_GUID")
     private String userGuid;
+
+    @TableField("USER_ORGANIZATION")
+    private String userOrganization;
 
     /**
      * 比赛项目ID

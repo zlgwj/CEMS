@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
- * <p>
  * 赛事 前端控制器
- * </p>
  *
  * @author gwj
  * @since 2024-02-27
@@ -30,7 +30,8 @@ public class EventController {
     private EventService eventService;
 
     @GetMapping(value = "/page")
-    public R list(@RequestParam(required = false) Integer current, @RequestParam(required = false) Integer pageSize) {
+    public R list(@RequestParam(required = false) Integer current,
+                  @RequestParam(required = false) Integer pageSize) {
         if (current == null) {
             current = 1;
         }
@@ -48,13 +49,13 @@ public class EventController {
 
     @PostMapping(value = "/create")
     public R create(@RequestBody Event params) {
-        eventService.save(params);
+        eventService.saveEvent(params);
         return R.ok();
     }
 
-    @PostMapping(value = "/delete/{id}")
-    public R delete(@PathVariable("id") String id) {
-        eventService.removeById(id);
+    @PostMapping(value = "/delete")
+    public R delete(@RequestBody List<String> ids) {
+        eventService.removeBatchByIds(ids);
         return R.ok();
     }
 

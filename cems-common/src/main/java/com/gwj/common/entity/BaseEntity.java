@@ -1,6 +1,5 @@
 package com.gwj.common.entity;
 
-import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -12,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -19,7 +19,7 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode
-public class BaseEntity {
+public class BaseEntity implements Serializable {
 
     @TableId(value = "GUID", type = IdType.ASSIGN_UUID)
     private String guid;

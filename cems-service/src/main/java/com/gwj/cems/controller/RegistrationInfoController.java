@@ -2,7 +2,7 @@ package com.gwj.cems.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gwj.cems.pojo.entity.RegistrationInfo;
-import com.gwj.cems.service.RegistrationinfoService;
+import com.gwj.cems.service.RegistrationInfoService;
 import com.gwj.common.response.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,21 +13,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
- * <p>
  * 报名信息 前端控制器
- * </p>
  *
  * @author gwj
  * @since 2024-02-27
  */
 @RestController
 @RequestMapping("/registration-info")
-public class RegistrationinfoController {
+public class RegistrationInfoController {
 
 
     @Autowired
-    private RegistrationinfoService registrationinfoService;
+    private RegistrationInfoService registrationinfoService;
 
     @GetMapping(value = "/page")
     public R list(@RequestParam(required = false) Integer current, @RequestParam(required = false) Integer pageSize) {
@@ -52,15 +52,21 @@ public class RegistrationinfoController {
         return R.ok();
     }
 
-    @PostMapping(value = "/delete/{id}")
-    public R delete(@PathVariable("id") String id) {
-        registrationinfoService.removeById(id);
+    @PostMapping(value = "/delete")
+    public R delete(@RequestBody List<String> ids) {
+        registrationinfoService.removeBatchByIds(ids);
         return R.ok();
     }
 
     @PostMapping(value = "/update")
     public R update(@RequestBody RegistrationInfo params) {
         registrationinfoService.updateById(params);
+        return R.ok();
+    }
+
+    @PostMapping("/signup/{id}")
+    public R signup(@PathVariable String id) {
+        registrationinfoService.signup(id);
         return R.ok();
     }
 }

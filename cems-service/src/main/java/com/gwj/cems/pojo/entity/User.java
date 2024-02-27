@@ -4,19 +4,17 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.gwj.common.entity.BaseEntity;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.EqualsAndHashCode;
+
 
 /**
- * <p>
  * 用户
- * </p>
  *
  * @author 
  * @since 2024-02-27
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-
 @TableName("CAMPUS_EVENT_MANAGEMENT.USER")
 public class User extends BaseEntity {
 
@@ -47,24 +45,6 @@ public class User extends BaseEntity {
     private Integer gender;
 
     /**
-     * 专业
-     */
-    @TableField("PROFESSION")
-    private String profession;
-
-    /**
-     * 班级
-     */
-    @TableField("KLASS")
-    private String klass;
-
-    /**
-     * 年级
-     */
-    @TableField("GRADE")
-    private String grade;
-
-    /**
      * 手机号
      */
     @TableField("PHONE")
@@ -75,4 +55,10 @@ public class User extends BaseEntity {
      */
     @TableField("ROLE_GUID")
     private String roleGuid;
+
+    /**
+     * 组织ID
+     */
+    @TableField("ORGANIZATION_GUID")
+    private String organizationGuid;
 }

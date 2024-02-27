@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
- * <p>
  * 用户 前端控制器
- * </p>
  *
  * @author gwj
  * @since 2024-02-27
@@ -43,7 +43,7 @@ public class UserController {
 
     @GetMapping(value = "/{id}")
     public R getById(@PathVariable("id") String id) {
-        return R.ok().data(userService.getById(id));
+        return R.ok().data(userService.getUserDetail(id));
     }
 
     @PostMapping(value = "/create")
@@ -52,9 +52,9 @@ public class UserController {
         return R.ok();
     }
 
-    @PostMapping(value = "/delete/{id}")
-    public R delete(@PathVariable("id") String id) {
-        userService.removeById(id);
+    @PostMapping(value = "/delete")
+    public R delete(@RequestBody List<String> ids) {
+        userService.removeBatchByIds(ids);
         return R.ok();
     }
 

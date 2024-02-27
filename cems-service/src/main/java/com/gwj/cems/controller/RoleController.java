@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
- * <p>
  * 角色管理 前端控制器
- * </p>
  *
  * @author gwj
  * @since 2024-02-27
@@ -52,9 +52,9 @@ public class RoleController {
         return R.ok();
     }
 
-    @PostMapping(value = "/delete/{id}")
-    public R delete(@PathVariable("id") String id) {
-        roleService.removeById(id);
+    @PostMapping(value = "/delete")
+    public R delete(@RequestBody List<String> ids) {
+        roleService.removeBatchByIds(ids);
         return R.ok();
     }
 
