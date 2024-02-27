@@ -1,0 +1,42 @@
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+sa-token:
+  # token 名称（同时也是 cookie 名称）
+  token-name: token
+  # token 有效期（单位：秒） 默认30天，-1 代表永久有效
+  timeout: 2592000
+  # token 最低活跃频率（单位：秒），如果 token 超过此时间没有访问系统就会被冻结，默认-1 代表不限制，永不冻结
+  active-timeout: -1
+  # 是否允许同一账号多地同时登录 （为 true 时允许一起登录, 为 false 时新登录挤掉旧登录）
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个 token （为 true 时所有登录共用一个 token, 为 false 时每次登录新建一个 token）
+  is-share: true
+  # token 风格（默认可取值：uuid、simple-uuid、random-32、random-64、random-128、tik）
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true
+#私钥: 00e0225f0554055a6512f62e3998d73ac834feb36bab32b980f8888d4a7b8338d3
+#公钥: 044f9088024388dd9cc236119170e707f598fcd871a2bd30be0d588c034caf95d1be67c3ae3aefb963b51109c2ef9f59f2031e77dceddf36d9b783b144269992a7
+#压缩后的公钥: 034f9088024388dd9cc236119170e707f598fcd871a2bd30be0d588c034caf95d1
+
+encrypt:
+  private-key: 624b5d4a2f15c746e3a45861a6c6dd6c70df6591e3f4473534ab0e3dded78d210ef79a155b39f6f110a775e71b687b38a5151200d28da52f993abb4d6be5bf96
+  public-key: 034f9088024388dd9cc236119170e707f598fcd871a2bd30be0d588c034caf95d1
+  sm4-key: 1ea9cfa19083e0dfa80d11a0ef1f0c3f
+  default-password: 123456
+
+file:
+  temp-dir: /tmp/
+  tvdi-dir: /data/tifs/
+spring:
+  datasource:
+    dynamic:
+      druid:
+        query-timeout: 60000
