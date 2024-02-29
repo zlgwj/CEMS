@@ -7,6 +7,7 @@ import com.gwj.cems.service.UserService;
 import com.gwj.common.response.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -19,7 +20,7 @@ public class LoginController {
     private UserService userService;
 
     @PostMapping("/login")
-    public R login (LoginDTO loginDTO) {
+    public R login(@RequestBody LoginDTO loginDTO) {
         LoginResponse login = userService.login(loginDTO);
         return R.ok().data(login);
     }

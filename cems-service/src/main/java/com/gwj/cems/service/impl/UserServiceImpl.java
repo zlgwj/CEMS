@@ -6,6 +6,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SmUtil;
+import cn.hutool.crypto.digest.MD5;
 import cn.hutool.crypto.symmetric.SM4;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -62,9 +63,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         log.info("解密后的password: {}", password);
 
 //        md5摘要
-//        MD5 md5 = MD5.create();
-//        String digestedPassword = md5.digestHex(password);
-        String digestedPassword = password;
+        MD5 md5 = MD5.create();
+        String digestedPassword = md5.digestHex(password);
+//        String digestedPassword = password;
 
         log.info("password:{}", loginDTO.getPassword());
         log.info("摘要后password: {}",digestedPassword);
