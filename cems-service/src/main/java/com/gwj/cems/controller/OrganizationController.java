@@ -3,6 +3,7 @@ package com.gwj.cems.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gwj.cems.pojo.entity.Organization;
 import com.gwj.cems.service.OrganizationService;
+import com.gwj.common.response.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,11 @@ public class OrganizationController {
     public ResponseEntity<Object> delete(@PathVariable("id") String id) {
         organizationService.removeById(id);
         return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/list")
+    public R allOrganization() {
+        return R.ok().data(organizationService.list());
     }
 
     @PostMapping(value = "/update")

@@ -58,6 +58,11 @@ public class RoleController {
         return R.ok();
     }
 
+    @GetMapping(value = "/list")
+    public R getAllRole() {
+        return R.ok().data(roleService.list());
+    }
+
     @PostMapping(value = "/update")
     public R update(@RequestBody Role params) {
         roleService.updateById(params);
