@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gwj.cems.pojo.entity.Event;
+import com.gwj.cems.pojo.vo.TreeVo;
 import com.gwj.cems.service.EventService;
 import com.gwj.common.response.R;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,8 @@ public class EventController {
 
     @GetMapping("/tree")
     public R listAsTree() {
-        eventService.listAsTree();
+        List<TreeVo> treeVoList = eventService.listAsTree();
+        return R.ok().data(treeVoList);
     }
 
     @GetMapping(value = "/{id}")

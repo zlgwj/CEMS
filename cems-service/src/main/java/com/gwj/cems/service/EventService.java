@@ -2,6 +2,9 @@ package com.gwj.cems.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.gwj.cems.pojo.entity.Event;
+import com.gwj.cems.pojo.vo.TreeVo;
+
+import java.util.List;
 
 /**
  * 赛事 服务类
@@ -12,4 +15,6 @@ import com.gwj.cems.pojo.entity.Event;
 public interface EventService extends IService<Event> {
 
     void saveEvent(Event params);
+
+    List<TreeVo> listAsTree();
 }
