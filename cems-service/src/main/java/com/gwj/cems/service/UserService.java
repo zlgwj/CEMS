@@ -22,4 +22,6 @@ public interface UserService extends IService<User> {
     void saveUser(User user);
 
     UserVO getUserDetail(String id);
+
+    void updateUser(User params);
 }

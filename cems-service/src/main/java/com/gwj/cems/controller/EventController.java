@@ -1,17 +1,13 @@
 package com.gwj.cems.controller;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gwj.cems.pojo.entity.Event;
 import com.gwj.cems.service.EventService;
 import com.gwj.common.response.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,15 +27,26 @@ public class EventController {
 
     @GetMapping(value = "/page")
     public R list(@RequestParam(required = false) Integer current,
-                  @RequestParam(required = false) Integer pageSize) {
+                  @RequestParam(required = false) Integer pageSize,
+                  @RequestParam(required = false) Integer state,
+                  @RequestParam(required = false) String eventName
+    ) {
         if (current == null) {
             current = 1;
         }
         if (pageSize == null) {
             pageSize = 10;
         }
-        Page<Event> aPage = eventService.page(new Page<>(current, pageSize));
+        LambdaQueryWrapper<Event> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StrUtil.isNotBlank(eventName), Event::getEventName, eventName)
+                .eq(state != null, Event::getState, state);
+        Page<Event> aPage = eventService.page(new Page<>(current, pageSize), wrapper);
         return R.ok().data(aPage);
+    }
+
+    @GetMapping("/tree")
+    public R listAsTree() {
+        eventService.listAsTree();
     }
 
     @GetMapping(value = "/{id}")

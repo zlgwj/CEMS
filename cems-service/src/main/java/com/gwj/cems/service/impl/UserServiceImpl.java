@@ -120,10 +120,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String organizationGuid = user.getOrganizationGuid();
         Organization organization = organizationService.getById(organizationGuid);
         UserVO userVO = new UserVO();
-        BeanUtil.copyProperties(user, userVO);
         BeanUtil.copyProperties(organization, userVO);
+        BeanUtil.copyProperties(user, userVO);
         userVO.setOrganizationName(organization.getName());
         return userVO;
+    }
+
+    @Override
+    public void updateUser(User params) {
+        User user = getById(params.getGuid());
+        if (!user.getPassword().equals(params.getPassword())) {
+            params.setPassword(encryptPassword(params.getPassword()));
+        }
+        updateById(params);
     }
 
     private String encryptPassword(String password) {
