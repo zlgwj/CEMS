@@ -17,4 +17,7 @@ public interface EventService extends IService<Event> {
     void saveEvent(Event params);
 
     List<TreeVo> listAsTree();
+
+
+    void autoUpdateState();
 }

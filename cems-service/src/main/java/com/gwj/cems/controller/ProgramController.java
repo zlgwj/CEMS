@@ -1,17 +1,13 @@
 package com.gwj.cems.controller;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gwj.cems.pojo.entity.Program;
 import com.gwj.cems.service.ProgramService;
 import com.gwj.common.response.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,14 +26,21 @@ public class ProgramController {
     private ProgramService programService;
 
     @GetMapping(value = "/page")
-    public R list(@RequestParam(required = false) Integer current, @RequestParam(required = false) Integer pageSize) {
+    public R list(@RequestParam(required = false) Integer current,
+                  @RequestParam(required = false) Integer pageSize,
+                  @RequestParam(required = false) String programName,
+                  @RequestParam String eventId
+    ) {
+        LambdaQueryWrapper<Program> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Program::getEventGuid, eventId)
+                .like(StrUtil.isNotBlank(programName), Program::getProgramName, programName);
         if (current == null) {
             current = 1;
         }
         if (pageSize == null) {
             pageSize = 10;
         }
-        Page<Program> aPage = programService.page(new Page<>(current, pageSize));
+        Page<Program> aPage = programService.page(new Page<>(current, pageSize), wrapper);
         return R.ok().data(aPage);
     }
 

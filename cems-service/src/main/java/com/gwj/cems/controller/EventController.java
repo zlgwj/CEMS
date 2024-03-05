@@ -7,6 +7,7 @@ import com.gwj.cems.pojo.entity.Event;
 import com.gwj.cems.pojo.vo.TreeVo;
 import com.gwj.cems.service.EventService;
 import com.gwj.common.response.R;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/event")
+@Slf4j
 public class EventController {
 
 
