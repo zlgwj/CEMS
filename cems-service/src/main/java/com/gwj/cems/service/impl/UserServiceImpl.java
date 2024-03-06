@@ -122,7 +122,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         UserVO userVO = new UserVO();
         BeanUtil.copyProperties(organization, userVO);
         BeanUtil.copyProperties(user, userVO);
-        userVO.setOrganizationName(organization.getName());
+        if (organization != null)
+            userVO.setOrganizationName(organization.getName());
         return userVO;
     }
 

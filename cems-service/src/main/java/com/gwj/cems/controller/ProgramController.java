@@ -29,10 +29,12 @@ public class ProgramController {
     public R list(@RequestParam(required = false) Integer current,
                   @RequestParam(required = false) Integer pageSize,
                   @RequestParam(required = false) String programName,
+                  @RequestParam(required = false) Integer programType,
                   @RequestParam String eventId
     ) {
         LambdaQueryWrapper<Program> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Program::getEventGuid, eventId)
+                .eq(programType != null && programType != 0, Program::getProgramType, programType)
                 .like(StrUtil.isNotBlank(programName), Program::getProgramName, programName);
         if (current == null) {
             current = 1;

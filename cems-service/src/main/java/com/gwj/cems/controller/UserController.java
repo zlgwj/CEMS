@@ -68,4 +68,9 @@ public class UserController {
         userService.updateUser(params);
         return R.ok();
     }
+
+    @GetMapping(value = "/list")
+    public R getUserList() {
+        return R.ok().data(userService.list());
+    }
 }
