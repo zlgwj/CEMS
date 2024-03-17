@@ -51,10 +51,10 @@ public class User extends BaseEntity {
     private String phone;
 
     /**
-     * 角色ID
+     * 角色
      */
-    @TableField("ROLE_GUID")
-    private String roleGuid;
+    @TableField("ROLE")
+    private Integer role;
 
     /**
      * 组织ID

@@ -8,15 +8,18 @@ import com.gwj.cems.mapper.RegistrationInfoMapper;
 import com.gwj.cems.pojo.entity.Program;
 import com.gwj.cems.pojo.entity.RegistrationInfo;
 import com.gwj.cems.pojo.entity.User;
+import com.gwj.cems.service.EventService;
 import com.gwj.cems.service.ProgramService;
 import com.gwj.cems.service.RegistrationInfoService;
 import com.gwj.cems.service.UserService;
 import com.gwj.common.enums.GenderEnum;
+import com.gwj.common.exception.MyException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 报名信息 服务实现类
@@ -33,6 +36,9 @@ public class RegistrationInfoServiceImpl extends ServiceImpl<RegistrationInfoMap
     @Resource
     private ProgramService programService;
 
+    @Resource
+    private EventService eventService;
+
     @Override
     public void signup(String id) {
         User user = (User) StpUtil.getSession().get(SaSession.USER);
@@ -47,14 +53,14 @@ public class RegistrationInfoServiceImpl extends ServiceImpl<RegistrationInfoMap
                     .eq(RegistrationInfo::getUserOrganization, user.getOrganizationGuid());
             List<RegistrationInfo> list = list(wrapper);
             if (list != null && !list.isEmpty()) {
-                if (list.size() > program.getEntrantsLimit()) {
-                    throw new RuntimeException("报名人数已满");
+                if (list.size() >= program.getEntrantsLimit()) {
+                    throw new MyException("报名人数已满");
                 }
             }
             if (!Objects.equals(program.getGenderLimit(), GenderEnum.UNKNOWN.getCode())
                     && !Objects.equals(program.getGenderLimit(), user.getGender())
             ) {
-                throw new RuntimeException("性别不符合要求");
+                throw new MyException("性别不符合要求");
             }
             RegistrationInfo registrationInfo = new RegistrationInfo()
                     .setProgramGuid(id)
@@ -62,5 +68,15 @@ public class RegistrationInfoServiceImpl extends ServiceImpl<RegistrationInfoMap
                     .setUserGuid(user.getGuid());
             save(registrationInfo);
         }
+    }
+
+    @Override
+    public List<String> getRegisteredList(String eventId, String guid) {
+//        该赛事的所有项目id
+        List<String> collect = programService.list(new LambdaQueryWrapper<Program>().eq(Program::getEventGuid, eventId)).stream().map(Program::getGuid).collect(Collectors.toList());
+//        根据项目id和用户id查询报名信息
+        List<RegistrationInfo> list = list(new LambdaQueryWrapper<RegistrationInfo>().in(RegistrationInfo::getProgramGuid, collect).eq(RegistrationInfo::getUserGuid, guid));
+//        提取这些报名信息的项目id
+        return list.stream().map(RegistrationInfo::getProgramGuid).collect(Collectors.toList());
     }
 }

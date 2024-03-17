@@ -53,6 +53,12 @@ public class EventController {
         return R.ok().data(treeVoList);
     }
 
+    @GetMapping("/tree/registrable")
+    public R listRegistrableAsTree() {
+        List<TreeVo> treeVoList = eventService.listRegistrableAsTree();
+        return R.ok().data(treeVoList);
+    }
+
     @GetMapping(value = "/{id}")
     public R getById(@PathVariable("id") String id) {
         return R.ok().data(eventService.getById(id));

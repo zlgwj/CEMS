@@ -1,17 +1,14 @@
 package com.gwj.cems.controller;
 
+import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gwj.cems.pojo.entity.RegistrationInfo;
+import com.gwj.cems.pojo.entity.User;
 import com.gwj.cems.service.RegistrationInfoService;
 import com.gwj.common.response.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -68,5 +65,12 @@ public class RegistrationInfoController {
     public R signup(@PathVariable String id) {
         registrationinfoService.signup(id);
         return R.ok();
+    }
+
+    @GetMapping(value = "/registered/list/{eventId}")
+    public R getRegisteredList(@PathVariable String eventId) {
+        User user = (User) StpUtil.getSession().get(SaSession.USER);
+        List<String> ids = registrationinfoService.getRegisteredList(eventId, user.getGuid());
+        return R.ok().data(ids);
     }
 }
