@@ -3,8 +3,8 @@ package com.gwj.cems.controller;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.gwj.cems.pojo.entity.RegistrationInfo;
 import com.gwj.cems.pojo.entity.User;
+import com.gwj.cems.pojo.vo.RegistrationInfoVo;
 import com.gwj.cems.service.RegistrationInfoService;
 import com.gwj.common.response.R;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,38 +27,18 @@ public class RegistrationInfoController {
     private RegistrationInfoService registrationinfoService;
 
     @GetMapping(value = "/page")
-    public R list(@RequestParam(required = false) Integer current, @RequestParam(required = false) Integer pageSize) {
+    public R list(@RequestParam(required = false) Integer current,
+                  @RequestParam(required = false) Integer pageSize,
+                  @RequestParam(required = false) Integer state,
+                  @RequestParam String eventId) {
         if (current == null) {
             current = 1;
         }
         if (pageSize == null) {
             pageSize = 10;
         }
-        Page<RegistrationInfo> aPage = registrationinfoService.page(new Page<>(current, pageSize));
+        Page<RegistrationInfoVo> aPage = registrationinfoService.selectPage(new Page<>(current, pageSize), eventId, state);
         return R.ok().data(aPage);
-    }
-
-    @GetMapping(value = "/{id}")
-    public R getById(@PathVariable("id") String id) {
-        return R.ok().data(registrationinfoService.getById(id));
-    }
-
-    @PostMapping(value = "/create")
-    public R create(@RequestBody RegistrationInfo params) {
-        registrationinfoService.save(params);
-        return R.ok();
-    }
-
-    @PostMapping(value = "/delete")
-    public R delete(@RequestBody List<String> ids) {
-        registrationinfoService.removeBatchByIds(ids);
-        return R.ok();
-    }
-
-    @PostMapping(value = "/update")
-    public R update(@RequestBody RegistrationInfo params) {
-        registrationinfoService.updateById(params);
-        return R.ok();
     }
 
     @PostMapping("/signup/{id}")
@@ -72,5 +52,23 @@ public class RegistrationInfoController {
         User user = (User) StpUtil.getSession().get(SaSession.USER);
         List<String> ids = registrationinfoService.getRegisteredList(eventId, user.getGuid());
         return R.ok().data(ids);
+    }
+
+    @PostMapping(value = "/audit")
+    public R audit(@RequestBody List<String> ids) {
+        Integer audit = registrationinfoService.audit(ids);
+        return R.ok().data(audit);
+    }
+
+    @PostMapping(value = "/reject")
+    public R reject(@RequestBody List<String> ids) {
+        Integer reject = registrationinfoService.reject(ids);
+        return R.ok().data(reject);
+    }
+
+    @PostMapping(value = "/cancel/{id}")
+    public R cancel(@PathVariable String id) {
+        registrationinfoService.cancel(id);
+        return R.ok();
     }
 }

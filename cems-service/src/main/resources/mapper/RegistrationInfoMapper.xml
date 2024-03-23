@@ -2,4 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gwj.cems.mapper.RegistrationInfoMapper">
 
+    <select id="pageVo" resultType="com.gwj.cems.pojo.vo.RegistrationInfoVo">
+        select r.GUID,
+               r.USER_GUID,
+               u.NAME         userName,
+               r.USER_ORGANIZATION,
+               o.NAME         organizationName,
+               r.PROGRAM_GUID,
+               p.PROGRAM_NAME programName,
+               r.STATE
+        from REGISTRATION_INFO r
+                 left join USER u on r.USER_GUID = u.GUID
+                 left join ORGANIZATION o on o.GUID = r.USER_ORGANIZATION
+                 left join PROGRAM p on r.PROGRAM_GUID = p.GUID
+            ${ew.customSqlSegment}
+    </select>
+    <select id="countConcurrent" resultType="java.lang.Integer">
+        select count(*)
+        from REGISTRATION_INFO
+        where USER_GUID = #{userGuid}
+          and IS_DELETED = 0
+          and PROGRAM_GUID in (select PROGRAM_GUID from PROGRAM where EVENT_GUID = #{eventGuid});
+    </select>
 </mapper>

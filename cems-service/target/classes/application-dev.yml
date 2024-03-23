@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://154.8.193.4:3306/CAMPUS_EVENT_MANAGEMENT?serverTimezone=UTC&useSSL=false
-    username: admin
-    password: 9PL1rdC0U(X*__gs
+    url: jdbc:mysql://localhost:3316/CAMPUS_EVENT_MANAGEMENT?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf-8
+    username: root
+    password: 123456
   redis:
     host: localhost
     port: 6379

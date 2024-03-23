@@ -46,6 +46,12 @@ public class ProgramController {
         return R.ok().data(aPage);
     }
 
+
+    @GetMapping(value = "/list/{eventId}")
+    public R getProgramList(@PathVariable String eventId) {
+        return R.ok().data(programService.list(new LambdaQueryWrapper<Program>().eq(Program::getEventGuid, eventId)));
+    }
+
     @GetMapping(value = "/{id}")
     public R getById(@PathVariable("id") String id) {
         return R.ok().data(programService.getById(id));

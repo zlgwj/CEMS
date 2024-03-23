@@ -77,7 +77,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         StpUtil.login(user.getGuid());
         log.info("登录成功，token:{}", StpUtil.getTokenValue());
         StpUtil.getSession().set(SaSession.USER, user);
-        return new LoginResponse(user.getUsername(), user.getName(), StpUtil.getTokenValue());
+        return new LoginResponse(user.getUsername(), user.getName(), StpUtil.getTokenValue(), user.getRole());
 
     }
 

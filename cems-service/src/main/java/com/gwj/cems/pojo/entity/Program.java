@@ -6,6 +6,8 @@ import com.gwj.common.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
+
 /**
  * 比赛项目
  *
@@ -61,6 +63,24 @@ public class Program extends BaseEntity {
      */
     @TableField("PROGRAM_TYPE")
     private Integer programType;
+
+    /**
+     * 比赛日期
+     */
+    @TableField("PLAY_TIME")
+    private Date playTime;
+
+    /**
+     * 比赛顺序
+     */
+    @TableField("PLAY_SORT")
+    private Integer playSort;
+
+    /**
+     * 比赛顺序
+     */
+    @TableField("AM_PM")
+    private Integer amPm;
 
     /**
      * 创建人
