@@ -42,7 +42,7 @@ public class UserController {
         wrapper.like(StrUtil.isNotBlank(name), User::getName, name)
                 .eq(StrUtil.isNotBlank(phone), User::getPhone, phone)
                 .eq(StrUtil.isNotBlank(username), User::getUsername, username).orderBy(true, true, User::getGuid);
-        Page<User> aPage = userService.page(new Page<>(current, pageSize));
+        Page<User> aPage = userService.page(new Page<>(current, pageSize), wrapper);
         return R.ok().data(aPage);
     }
 
