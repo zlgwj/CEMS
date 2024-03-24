@@ -3,6 +3,7 @@ package com.gwj.cems.controller;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gwj.cems.pojo.dto.ProgramArrangeDTO;
 import com.gwj.cems.pojo.entity.Program;
 import com.gwj.cems.service.ProgramService;
 import com.gwj.common.response.R;
@@ -47,9 +48,9 @@ public class ProgramController {
     }
 
 
-    @GetMapping(value = "/list/{eventId}")
-    public R getProgramList(@PathVariable String eventId) {
-        return R.ok().data(programService.list(new LambdaQueryWrapper<Program>().eq(Program::getEventGuid, eventId)));
+    @GetMapping(value = "/list/{type}/{eventId}")
+    public R getProgramList(@PathVariable String eventId, @PathVariable Integer type) {
+        return R.ok().data(programService.list(new LambdaQueryWrapper<Program>().eq(Program::getEventGuid, eventId).eq(Program::getProgramType, type)));
     }
 
     @GetMapping(value = "/{id}")
@@ -72,6 +73,12 @@ public class ProgramController {
     @PostMapping(value = "/update")
     public R update(@RequestBody Program params) {
         programService.updateById(params);
+        return R.ok();
+    }
+
+    @PostMapping(value = "/arrange")
+    public R arrange(@RequestBody ProgramArrangeDTO params) {
+        programService.arrange(params);
         return R.ok();
     }
 }
