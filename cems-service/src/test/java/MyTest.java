@@ -26,4 +26,8 @@ public class MyTest {
             System.out.println("有结果吗？");
         }
     }
+
+    public static void main(String[] args) {
+        System.out.printf("%s");
+    }
 }

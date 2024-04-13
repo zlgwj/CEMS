@@ -1,0 +1,220 @@
+[
+  {
+    "path": "/home/index",
+    "name": "home",
+    "component": "/home/index",
+    "meta": {
+      "icon": "HomeFilled",
+      "title": "首页",
+      "link": "",
+      "hide": false,
+      "full": false,
+      "affix": true,
+      "keepAlive": true
+    },
+    "children": [
+      {
+        "path": "/home/index",
+        "name": "campusStyle",
+        "component": "/home/campusStyle/index",
+        "meta": {
+          "icon": "Menu",
+          "title": "校园风采",
+          "link": "",
+          "hide": false,
+          "full": false,
+          "affix": false,
+          "keepAlive": true
+        }
+      },
+      {
+        "path": "/home/dataVisualize",
+        "name": "dataVisualize",
+        "component": "/home/dataVisualize/index",
+        "meta": {
+          "icon": "Menu",
+          "title": "数据可视化",
+          "link": "",
+          "hide": false,
+          "full": false,
+          "affix": false,
+          "keepAlive": true
+        }
+      },
+      {
+        "path": "/home/dataScreen",
+        "name": "dataScreen",
+        "component": "/home/dataScreen/index",
+        "meta": {
+          "icon": "Histogram",
+          "title": "数据大屏",
+          "link": "",
+          "hide": false,
+          "full": true,
+          "affix": false,
+          "keepAlive": true
+        }
+      }
+    ]
+  },
+  {
+    "path": "/systemManage",
+    "name": "systemManage",
+    "component": "/systemManage/user",
+    "meta": {
+      "icon": "Stamp",
+      "title": "系统管理",
+      "link": "",
+      "hide": false,
+      "full": false,
+      "affix": false,
+      "keepAlive": true
+    },
+    "children": [
+      {
+        "path": "/systemManage/user",
+        "name": "userManage",
+        "component": "/systemManage/user",
+        "meta": {
+          "icon": "Stamp",
+          "title": "用户管理",
+          "link": "",
+          "hide": false,
+          "full": false,
+          "affix": false,
+          "keepAlive": true
+        }
+      },
+      {
+        "path": "/systemManage/organization",
+        "name": "organizationManage",
+        "component": "/systemManage/organization",
+        "meta": {
+          "icon": "Stamp",
+          "title": "组织管理",
+          "link": "",
+          "hide": false,
+          "full": false,
+          "affix": false,
+          "keepAlive": true
+        }
+      }
+    ]
+  },
+  {
+    "path": "/applyManage/index",
+    "name": "applyManage",
+    "component": "/applyManage/index",
+    "meta": {
+      "icon": "Tickets",
+      "title": "报名管理",
+      "link": "",
+      "hide": false,
+      "full": false,
+      "affix": false,
+      "keepAlive": true
+    },
+    "children": [
+      {
+        "path": "/applyManage/index",
+        "name": "applyManage",
+        "component": "/applyManage/index",
+        "meta": {
+          "icon": "Histogram",
+          "title": "报名入口",
+          "link": "",
+          "hide": false,
+          "full": false,
+          "affix": false,
+          "keepAlive": true
+        }
+      },
+      {
+        "path": "/applyManage/registrationDetails",
+        "name": "registrationDetails",
+        "component": "/applyManage/registrationDetails",
+        "meta": {
+          "icon": "Histogram",
+          "title": "报名详情",
+          "link": "",
+          "hide": false,
+          "full": false,
+          "affix": false,
+          "keepAlive": true
+        }
+      }
+    ]
+  },
+  {
+    "path": "/competitionManage/index",
+    "name": "competitionManage",
+    "component": "/competitionManage/index",
+    "meta": {
+      "icon": "Histogram",
+      "title": "赛事管理",
+      "link": "",
+      "hide": false,
+      "full": false,
+      "affix": false,
+      "keepAlive": true
+    },
+    "children": [
+      {
+        "path": "/competitionManage/index",
+        "name": "projectManage",
+        "component": "/competitionManage/index",
+        "meta": {
+          "icon": "Histogram",
+          "title": "赛事中心",
+          "link": "",
+          "hide": false,
+          "full": false,
+          "affix": false,
+          "keepAlive": true
+        }
+      },
+      {
+        "path": "/competitionManage/projectManage",
+        "name": "projectManage",
+        "component": "/competitionManage/projectManage",
+        "meta": {
+          "icon": "Histogram",
+          "title": "项目中心",
+          "link": "",
+          "hide": false,
+          "full": false,
+          "affix": false,
+          "keepAlive": true
+        }
+      }
+    ]
+  },
+  {
+    "path": "/processManagement/index",
+    "name": "processManagement",
+    "component": "/processManagement/index",
+    "meta": {
+      "icon": "Odometer",
+      "title": "赛程管理",
+      "link": "",
+      "hide": false,
+      "full": false,
+      "affix": false,
+      "keepAlive": true
+    }
+  },
+  {
+    "path": "/notices",
+    "name": "notices",
+    "component": "/notices/index",
+    "meta": {
+      "icon": "Histogram",
+      "title": "通知与公告",
+      "link": "",
+      "hide": false,
+      "full": false,
+      "affix": false,
+      "keepAlive": true
+    }
+  }
+]

@@ -15,4 +15,13 @@ public enum RoleEnum {
     private final String desc;
 
     private final Integer code;
+
+    public static boolean validRole(Integer code) {
+        for (RoleEnum roleEnum : RoleEnum.values()) {
+            if (roleEnum.getCode().equals(code)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

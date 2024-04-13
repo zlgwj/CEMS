@@ -40,3 +40,8 @@ spring:
     dynamic:
       druid:
         query-timeout: 60000
+
+notice:
+  title: 管理员发布了赛事 \n【%s】
+  desc: 点击跳转
+  link: "#/competitionManage/index"

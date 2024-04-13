@@ -1,16 +1,10 @@
 package com.zlgewj.generator;
 
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.github.davidfantasy.mybatisplus.generatorui.GeneratorConfig;
 import com.github.davidfantasy.mybatisplus.generatorui.MybatisPlusToolsApplication;
 import com.github.davidfantasy.mybatisplus.generatorui.mbp.NameConverter;
-import com.github.davidfantasy.mybatisplus.generatorui.mbp.TemplateVaribleInjecter;
 import com.google.common.base.Strings;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 
 public class GeberatorUIServer {
 
@@ -18,9 +12,9 @@ public class GeberatorUIServer {
 
     public static void main(String[] args) {
         GeneratorConfig config = GeneratorConfig.builder()
-                .jdbcUrl("jdbc:mysql://154.8.193.4:3306/CAMPUS_EVENT_MANAGEMENT")
-                .userName("admin")
-                .password("9PL1rdC0U(X*__gs")
+                .jdbcUrl("jdbc:mysql://localhost:3316/CAMPUS_EVENT_MANAGEMENT")
+                .userName("root")
+                .password("123456")
                 .driverClassName("com.mysql.cj.jdbc.Driver")
                 //数据库schema，POSTGRE_SQL,ORACLE,DB2类型的数据库需要指定
                 .schemaName("CAMPUS_EVENT_MANAGEMENT")

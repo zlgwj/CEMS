@@ -92,6 +92,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.49</version>
+        </dependency>
+
+        <dependency>
             <groupId>black.ninia</groupId>
             <artifactId>jep</artifactId>
             <version>4.2.0</version>

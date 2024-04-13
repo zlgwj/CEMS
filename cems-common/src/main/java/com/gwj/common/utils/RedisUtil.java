@@ -44,6 +44,7 @@ public class RedisUtil {
             operations.set(key, value);
             result = true;
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("设置{},有误", key);
         }
         return result;

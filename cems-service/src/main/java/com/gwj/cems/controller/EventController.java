@@ -6,11 +6,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gwj.cems.pojo.entity.Event;
 import com.gwj.cems.pojo.vo.TreeVo;
 import com.gwj.cems.service.EventService;
+import com.gwj.cems.service.NoticeService;
 import com.gwj.common.response.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -27,6 +29,9 @@ public class EventController {
 
     @Autowired
     private EventService eventService;
+
+    @Resource
+    private NoticeService noticeService;
 
     @GetMapping(value = "/page")
     public R list(@RequestParam(required = false) Integer current,
@@ -67,6 +72,7 @@ public class EventController {
     @PostMapping(value = "/create")
     public R create(@RequestBody Event params) {
         eventService.saveEvent(params);
+        noticeService.createLinkedNotice(params);
         return R.ok();
     }
 
