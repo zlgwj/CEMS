@@ -16,10 +16,7 @@ import com.gwj.cems.service.EventService;
 import com.gwj.cems.service.ProgramService;
 import com.gwj.cems.service.RegistrationInfoService;
 import com.gwj.cems.service.UserService;
-import com.gwj.common.enums.DeleteEnum;
-import com.gwj.common.enums.GenderEnum;
-import com.gwj.common.enums.RegistrationStateEnum;
-import com.gwj.common.enums.RoleEnum;
+import com.gwj.common.enums.*;
 import com.gwj.common.exception.MyException;
 import org.springframework.stereotype.Service;
 
@@ -178,5 +175,36 @@ public class RegistrationInfoServiceImpl extends ServiceImpl<RegistrationInfoMap
             return;
         }
         throw new MyException("权限不足");
+    }
+
+    @Override
+    public Integer[] collectGender() {
+
+        List<String> collect1 = programService.list(new LambdaQueryWrapper<Program>().eq(Program::getGenderLimit, GenderEnum.MALE.getCode())).stream().map(Program::getGuid).collect(Collectors.toList());
+        List<String> collect2 = programService.list(new LambdaQueryWrapper<Program>().eq(Program::getGenderLimit, GenderEnum.FEMALE.getCode())).stream().map(Program::getGuid).collect(Collectors.toList());
+
+        long count1 = count(new LambdaQueryWrapper<RegistrationInfo>().in(RegistrationInfo::getProgramGuid, collect1));
+        long count2 = count(new LambdaQueryWrapper<RegistrationInfo>().in(RegistrationInfo::getProgramGuid, collect2));
+        return new Integer[]{(int) count1, (int) count2};
+    }
+
+    @Override
+    public Integer[] collectTJ() {
+        List<String> collect1 = programService.list(new LambdaQueryWrapper<Program>().eq(Program::getProgramType, ProgramTypeEnum.FIELD_EVENT.getCode())).stream().map(Program::getGuid).collect(Collectors.toList());
+        List<String> collect2 = programService.list(new LambdaQueryWrapper<Program>().eq(Program::getProgramType, ProgramTypeEnum.TRACK_EVENT.getCode())).stream().map(Program::getGuid).collect(Collectors.toList());
+        List<String> collect3 = programService.list(new LambdaQueryWrapper<Program>().eq(Program::getProgramType, ProgramTypeEnum.MASS_EVENT.getCode())).stream().map(Program::getGuid).collect(Collectors.toList());
+        long count1 = 0;
+        if (!collect1.isEmpty()) {
+            count1 = count(new LambdaQueryWrapper<RegistrationInfo>().in(RegistrationInfo::getProgramGuid, collect1));
+        }
+        long count2 = 0;
+        if (!collect2.isEmpty()) {
+            count2 = count(new LambdaQueryWrapper<RegistrationInfo>().in(RegistrationInfo::getProgramGuid, collect2));
+        }
+        long count3 = 0;
+        if (!collect3.isEmpty()) {
+            count3 = count(new LambdaQueryWrapper<RegistrationInfo>().in(RegistrationInfo::getProgramGuid, collect3));
+        }
+        return new Integer[]{(int) count1, (int) count2, (int) count3};
     }
 }

@@ -26,4 +26,8 @@ public interface RegistrationInfoService extends IService<RegistrationInfo> {
     Integer reject(List<String> ids);
 
     void cancel(String id);
+
+    Integer[] collectGender();
+
+    Integer[] collectTJ();
 }

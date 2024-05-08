@@ -10,10 +10,7 @@ spring:
 server:
   port: 9555
 upload:
-  lst: E:\upload\lst
-  ndvi: E:\upload\ndvi
-  tvdi: E:\upload\tvdi
-  uav: E:\upload\uav
+  photo: E:\upload\photo\
 py:
   jep: D:\Environment\anaconda\Lib\site-packages\jep\jep.dll
 
