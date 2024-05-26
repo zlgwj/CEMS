@@ -1,6 +1,7 @@
 package com.gwj.cems.controller;
 
 import com.gwj.cems.service.EventService;
+import com.gwj.cems.service.ProgramService;
 import com.gwj.cems.service.RegistrationInfoService;
 import com.gwj.common.response.R;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,9 @@ public class DataController {
 
     @Resource
     private EventService eventService;
+
+    @Resource
+    private ProgramService programService;
 
     /**
      * 根据性别统计报名信息
@@ -44,4 +48,15 @@ public class DataController {
         return R.ok().data(data);
     }
 
+    @GetMapping("/all")
+    public R getAll() {
+        long count = registrationInfoService.count();
+        return R.ok().data(count);
+    }
+
+    @GetMapping("/allProgram")
+    public R getAllProgram() {
+        long count = programService.count();
+        return R.ok().data(count);
+    }
 }
