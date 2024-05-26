@@ -26,20 +26,6 @@
           "affix": false,
           "keepAlive": true
         }
-      },
-      {
-        "path": "/home/dataVisualize",
-        "name": "dataVisualize",
-        "component": "/home/dataVisualize/index",
-        "meta": {
-          "icon": "Menu",
-          "title": "数据可视化",
-          "link": "",
-          "hide": false,
-          "full": false,
-          "affix": false,
-          "keepAlive": true
-        }
       }
     ]
   },
