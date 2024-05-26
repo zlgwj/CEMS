@@ -26,6 +26,15 @@ public class RegistrationInfoController {
     @Autowired
     private RegistrationInfoService registrationinfoService;
 
+    /**
+     * 根据赛事分页查询报名信息
+     *
+     * @param current
+     * @param pageSize
+     * @param state
+     * @param eventId
+     * @return
+     */
     @GetMapping(value = "/page")
     public R list(@RequestParam(required = false) Integer current,
                   @RequestParam(required = false) Integer pageSize,
@@ -41,12 +50,22 @@ public class RegistrationInfoController {
         return R.ok().data(aPage);
     }
 
+    /**
+     * 报名
+     * @param id
+     * @return
+     */
     @PostMapping("/signup/{id}")
     public R signup(@PathVariable String id) {
         registrationinfoService.signup(id);
         return R.ok();
     }
 
+    /**
+     * 根据登录用户获取已报名的报名信息
+     * @param eventId
+     * @return
+     */
     @GetMapping(value = "/registered/list/{eventId}")
     public R getRegisteredList(@PathVariable String eventId) {
         User user = (User) StpUtil.getSession().get(SaSession.USER);
@@ -54,18 +73,33 @@ public class RegistrationInfoController {
         return R.ok().data(ids);
     }
 
+    /**
+     * 审核
+     * @param ids
+     * @return
+     */
     @PostMapping(value = "/audit")
     public R audit(@RequestBody List<String> ids) {
         Integer audit = registrationinfoService.audit(ids);
         return R.ok().data(audit);
     }
 
+    /**
+     * 驳回
+     * @param ids
+     * @return
+     */
     @PostMapping(value = "/reject")
     public R reject(@RequestBody List<String> ids) {
         Integer reject = registrationinfoService.reject(ids);
         return R.ok().data(reject);
     }
 
+    /**
+     * 取消报名
+     * @param id
+     * @return
+     */
     @PostMapping(value = "/cancel/{id}")
     public R cancel(@PathVariable String id) {
         registrationinfoService.cancel(id);

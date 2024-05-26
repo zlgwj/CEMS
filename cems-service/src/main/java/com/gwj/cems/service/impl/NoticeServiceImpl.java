@@ -43,17 +43,27 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
 
     @Override
     public List<Notice> getListByUser() {
+//        获取当前用户
         User user = (User) StpUtil.getSession().get(SaSession.USER);
+//        查询该用户已读的公告
         LambdaQueryWrapper<UserNotice> userNoticeWrapper = new LambdaQueryWrapper<>();
         userNoticeWrapper.eq(UserNotice::getUserGuid, user.getGuid());
         List<String> notices = usernoticeService.list(userNoticeWrapper).stream().map(UserNotice::getNoticeGuid).collect(Collectors.toList());
+//        如果已读为空，则直接查询所有公告
         if (notices.isEmpty()) {
             return list();
         }
+//        查询不为该用户已读的公告（未读公告）
         LambdaQueryWrapper<Notice> noticeLambdaQueryWrapper = new LambdaQueryWrapper<Notice>().notIn(Notice::getGuid, notices);
         return list(noticeLambdaQueryWrapper);
     }
 
+
+    /**
+     * 创建链接公告
+     *
+     * @param params
+     */
     @Override
     public void createLinkedNotice(Event params) {
         Notice notice = new Notice();
@@ -64,6 +74,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
         save(notice);
     }
 
+    //    发布公告
     @Override
     public void publish(Notice notice) {
         notice.setNoticeType(NoticeTypeEnum.TEXT.getCode());

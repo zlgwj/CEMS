@@ -20,7 +20,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * @Author zlgewj
+ * OSS服务
+ * @Author
  * @Since 2023/9/18
  */
 
@@ -28,6 +29,12 @@ import java.util.Map;
 public class OssController {
 
 
+    /**
+     * 获取前端直传所需的签名
+     *
+     * @return
+     * @throws ClientException
+     */
     @RequestMapping("/oss/policy")
     public R policy() throws ClientException {
 

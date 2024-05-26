@@ -43,22 +43,31 @@ public class RegistrationInfoServiceImpl extends ServiceImpl<RegistrationInfoMap
     @Resource
     private EventService eventService;
 
+    /**
+     * 报名
+     *
+     * @param id
+     */
     @Override
     public void signup(String id) {
+//        获取当前用户
         User user = (User) StpUtil.getSession().get(SaSession.USER);
+//        获取报名的项目信息
         Program program = programService.getById(id);
         if (program == null) {
             throw new RuntimeException("项目信息不存在");
         }
 
-
+//      加锁防止出现并发问题
         synchronized (this) {
             Event event = eventService.getById(program.getEventGuid());
+//            统计当前用户在当前赛事报名的项目数量
             Integer count = baseMapper.countConcurrent(event.getGuid(), user.getGuid());
             if (event.getMaxConcurrent() < count) {
                 throw new MyException("兼项过多");
             }
 
+//            统计当前项目被该用户所在组织报名的数量
             LambdaQueryWrapper<RegistrationInfo> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(RegistrationInfo::getProgramGuid, id)
                     .eq(RegistrationInfo::getUserOrganization, user.getOrganizationGuid());
@@ -68,11 +77,13 @@ public class RegistrationInfoServiceImpl extends ServiceImpl<RegistrationInfoMap
                     throw new MyException("报名人数已满");
                 }
             }
+//            如果项目性别限制不符合要求
             if (!Objects.equals(program.getGenderLimit(), GenderEnum.UNKNOWN.getCode())
                     && !Objects.equals(program.getGenderLimit(), user.getGender())
             ) {
                 throw new MyException("性别不符合要求");
             }
+//
             RegistrationInfo registrationInfo = new RegistrationInfo()
                     .setProgramGuid(id)
                     .setUserOrganization(user.getOrganizationGuid())
@@ -94,10 +105,11 @@ public class RegistrationInfoServiceImpl extends ServiceImpl<RegistrationInfoMap
 
     @Override
     public Page<RegistrationInfoVo> selectPage(Page<RegistrationInfo> page, String eventId, Integer state) {
-//        该赛事的所有项目id
+//        获取当前用户
         User user = (User) StpUtil.getSession().get(SaSession.USER);
+//        查询该赛事的所有项目并把id单拎出来
         List<String> collect = programService.list(new LambdaQueryWrapper<Program>().eq(Program::getEventGuid, eventId)).stream().map(Program::getGuid).collect(Collectors.toList());
-
+//        根据项目id和状态分页查询
         QueryWrapper<RegistrationInfo> wrapper = new QueryWrapper<RegistrationInfo>()
                 .in("r.PROGRAM_GUID", collect)
                 .eq("r.STATE", state)
@@ -124,19 +136,22 @@ public class RegistrationInfoServiceImpl extends ServiceImpl<RegistrationInfoMap
         User user = (User) StpUtil.getSession().get(SaSession.USER);
         Integer role = user.getRole();
 
-//        根据ids 查询所有的报名信息 （需要判断审核状态）
+//        根据审核的ids 查询所有的报名信息 （需要判断审核状态）
         List<RegistrationInfo> list = list(new LambdaQueryWrapper<RegistrationInfo>().in(!ids.isEmpty(), RegistrationInfo::getGuid, ids));
 
+//        如果用户是管理员，则把所有初审通过的报名信息的状态改成成终审通过
         if (role.equals(RoleEnum.ADMIN.getCode())) {
             List<RegistrationInfo> collect = list.stream().filter(info -> Objects.equals(info.getState(), RegistrationStateEnum.FIRST_INSTANCED.getCode()))
                     .peek(info -> info.setState(RegistrationStateEnum.SIGN_UP_SUCCEED.getCode())).collect(Collectors.toList());
             updateBatchById(collect);
             return collect.size();
+//            如果用户是审核员，则把所有报名信息的状态改成初审通过
         } else if (role.equals(RoleEnum.AUDITOR.getCode())) {
             List<RegistrationInfo> collect = list.stream().filter(info -> Objects.equals(info.getState(), RegistrationStateEnum.SIGN_UP.getCode()))
                     .peek(info -> info.setState(RegistrationStateEnum.FIRST_INSTANCED.getCode())).collect(Collectors.toList());
             updateBatchById(collect);
             return collect.size();
+//            否则权限不足
         } else {
             throw new MyException("权限不足");
         }
@@ -150,12 +165,13 @@ public class RegistrationInfoServiceImpl extends ServiceImpl<RegistrationInfoMap
 
 //        根据ids 查询所有的报名信息 （需要判断审核状态）
         List<RegistrationInfo> list = list(new LambdaQueryWrapper<RegistrationInfo>().in(!ids.isEmpty(), RegistrationInfo::getGuid, ids));
-
+//        如果用户是管理员，则把所有初审通过的报名信息的状态改成成终审拒绝
         if (role.equals(RoleEnum.ADMIN.getCode())) {
             List<RegistrationInfo> collect = list.stream().filter(info -> Objects.equals(info.getState(), RegistrationStateEnum.FIRST_INSTANCED.getCode()))
                     .peek(info -> info.setState(RegistrationStateEnum.FINAL_REJECT.getCode())).collect(Collectors.toList());
             updateBatchById(collect);
             return collect.size();
+//            如果用户是审核员，则把所有报名信息的状态改成初审拒绝
         } else if (role.equals(RoleEnum.AUDITOR.getCode())) {
             List<RegistrationInfo> collect = list.stream().filter(info -> Objects.equals(info.getState(), RegistrationStateEnum.SIGN_UP.getCode()))
                     .peek(info -> info.setState(RegistrationStateEnum.FIRST_INSTANCED_REJECT.getCode())).collect(Collectors.toList());
@@ -168,8 +184,11 @@ public class RegistrationInfoServiceImpl extends ServiceImpl<RegistrationInfoMap
 
     @Override
     public void cancel(String id) {
+//        获取当前用户
         User user = (User) StpUtil.getSession().get(SaSession.USER);
+//        根据id获取撤销的报名信息
         RegistrationInfo byId = getById(id);
+//        如果用户是报名者，则删除报名信息
         if (byId.getUserGuid().equals(user.getGuid())) {
             removeById(id);
             return;
@@ -179,19 +198,24 @@ public class RegistrationInfoServiceImpl extends ServiceImpl<RegistrationInfoMap
 
     @Override
     public Integer[] collectGender() {
-
+//        男生的比赛项目
         List<String> collect1 = programService.list(new LambdaQueryWrapper<Program>().eq(Program::getGenderLimit, GenderEnum.MALE.getCode())).stream().map(Program::getGuid).collect(Collectors.toList());
+//        女生的比赛项目
         List<String> collect2 = programService.list(new LambdaQueryWrapper<Program>().eq(Program::getGenderLimit, GenderEnum.FEMALE.getCode())).stream().map(Program::getGuid).collect(Collectors.toList());
-
+//        统计男生报名信息
         long count1 = count(new LambdaQueryWrapper<RegistrationInfo>().in(RegistrationInfo::getProgramGuid, collect1));
+//        统计女生报名信息
         long count2 = count(new LambdaQueryWrapper<RegistrationInfo>().in(RegistrationInfo::getProgramGuid, collect2));
         return new Integer[]{(int) count1, (int) count2};
     }
 
     @Override
     public Integer[] collectTJ() {
+//        田赛项目
         List<String> collect1 = programService.list(new LambdaQueryWrapper<Program>().eq(Program::getProgramType, ProgramTypeEnum.FIELD_EVENT.getCode())).stream().map(Program::getGuid).collect(Collectors.toList());
+//        径赛项目
         List<String> collect2 = programService.list(new LambdaQueryWrapper<Program>().eq(Program::getProgramType, ProgramTypeEnum.TRACK_EVENT.getCode())).stream().map(Program::getGuid).collect(Collectors.toList());
+//        大众赛事项目
         List<String> collect3 = programService.list(new LambdaQueryWrapper<Program>().eq(Program::getProgramType, ProgramTypeEnum.MASS_EVENT.getCode())).stream().map(Program::getGuid).collect(Collectors.toList());
         long count1 = 0;
         if (!collect1.isEmpty()) {

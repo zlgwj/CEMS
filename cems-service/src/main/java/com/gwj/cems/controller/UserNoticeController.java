@@ -24,6 +24,12 @@ public class UserNoticeController {
     @Resource
     private UserNoticeService userNoticeService;
 
+    /**
+     * 阅读通知
+     *
+     * @param noticeId
+     * @return
+     */
     @PostMapping("/read/{noticeId}")
     public R readNotice(@PathVariable String noticeId) {
 

@@ -26,6 +26,16 @@ public class ProgramController {
     @Autowired
     private ProgramService programService;
 
+    /**
+     * 分页查询
+     *
+     * @param current
+     * @param pageSize
+     * @param programName
+     * @param programType
+     * @param eventId
+     * @return
+     */
     @GetMapping(value = "/page")
     public R list(@RequestParam(required = false) Integer current,
                   @RequestParam(required = false) Integer pageSize,
@@ -47,35 +57,65 @@ public class ProgramController {
         return R.ok().data(aPage);
     }
 
-
+    /**
+     * 根据赛事和项目类型查询比赛项目
+     * @param eventId
+     * @param type
+     * @return
+     */
     @GetMapping(value = "/list/{type}/{eventId}")
     public R getProgramList(@PathVariable String eventId, @PathVariable Integer type) {
         return R.ok().data(programService.list(new LambdaQueryWrapper<Program>().eq(Program::getEventGuid, eventId).eq(Program::getProgramType, type)));
     }
 
+    /**
+     * 根据id查询比赛项目
+     * @param id
+     * @return
+     */
     @GetMapping(value = "/{id}")
     public R getById(@PathVariable("id") String id) {
         return R.ok().data(programService.getById(id));
     }
 
+    /**
+     * 创建比赛项目
+     * @param params
+     * @return
+     */
     @PostMapping(value = "/create")
     public R create(@RequestBody Program params) {
         programService.save(params);
         return R.ok();
     }
 
+    /**
+     * 删除比赛项目
+     * @param ids
+     * @return
+     */
     @PostMapping(value = "/delete")
     public R delete(@RequestBody List<String> ids) {
         programService.removeBatchByIds(ids);
         return R.ok();
     }
 
+    /**
+     * 更新比赛项目
+     * @param params
+     * @return
+     */
     @PostMapping(value = "/update")
     public R update(@RequestBody Program params) {
         programService.updateById(params);
         return R.ok();
     }
 
+    /**
+     * 编排赛事项目赛程
+     * @param params
+     * @return
+     */
     @PostMapping(value = "/arrange")
     public R arrange(@RequestBody ProgramArrangeDTO params) {
         programService.arrange(params);

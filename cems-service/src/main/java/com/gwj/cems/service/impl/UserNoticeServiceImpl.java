@@ -24,6 +24,7 @@ public class UserNoticeServiceImpl extends ServiceImpl<UserNoticeMapper, UserNot
     public void readNotice(String noticeId) {
         User user = (User) StpUtil.getSession().get(SaSession.USER);
 
+//        新增一个 userNotice 信息表明用户已阅读notice
         UserNotice userNotice = new UserNotice();
         userNotice.setUserGuid(user.getGuid());
         userNotice.setNoticeGuid(noticeId);

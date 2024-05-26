@@ -21,10 +21,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class ProgramServiceImpl extends ServiceImpl<ProgramMapper, Program> implements ProgramService {
 
+    /**
+     * 编排赛程
+     *
+     * @param params
+     */
     @Override
     public void arrange(ProgramArrangeDTO params) {
         List<Program> amList = params.getAmList();
         AtomicInteger i = new AtomicInteger();
+//        遍历上午的列表并更新
         amList.forEach(program -> {
             update(new LambdaUpdateWrapper<Program>().eq(Program::getGuid, program.getGuid())
                     .set(Program::getPlayTime, params.getPlayTime())
@@ -33,6 +39,7 @@ public class ProgramServiceImpl extends ServiceImpl<ProgramMapper, Program> impl
             );
         });
         i.set(0);
+//        遍历下午的列表并更新
         List<Program> pmList = params.getPmList();
         pmList.forEach(program -> {
             update(new LambdaUpdateWrapper<Program>().eq(Program::getGuid, program.getGuid())
@@ -43,7 +50,7 @@ public class ProgramServiceImpl extends ServiceImpl<ProgramMapper, Program> impl
         });
 
         List<Program> freeList = params.getFreeList();
-
+//        便利空闲的列表并更新
         freeList.forEach(program -> {
             update(new LambdaUpdateWrapper<Program>().eq(Program::getGuid, program.getGuid())
                     .set(Program::getPlayTime, null)

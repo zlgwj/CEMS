@@ -25,6 +25,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 分页查询所有用户
+     *
+     * @param current
+     * @param pageSize
+     * @param name
+     * @param phone
+     * @param username
+     * @return
+     */
     @GetMapping(value = "/page")
     public R list(@RequestParam(required = false) Integer current,
                   @RequestParam(required = false) Integer pageSize,
@@ -46,29 +56,53 @@ public class UserController {
         return R.ok().data(aPage);
     }
 
+    /**
+     * 根据id查询用户
+     * @param id
+     * @return
+     */
     @GetMapping(value = "/{id}")
     public R getById(@PathVariable("id") String id) {
         return R.ok().data(userService.getUserDetail(id));
     }
 
+    /**
+     * 创建用户
+     * @param params
+     * @return
+     */
     @PostMapping(value = "/create")
     public R create(@RequestBody User params) {
         userService.saveUser(params);
         return R.ok();
     }
 
+    /**
+     * 删除用户
+     * @param ids
+     * @return
+     */
     @PostMapping(value = "/delete")
     public R delete(@RequestBody List<String> ids) {
         userService.removeBatchByIds(ids);
         return R.ok();
     }
 
+    /**
+     * 更新用户
+     * @param params
+     * @return
+     */
     @PostMapping(value = "/update")
     public R update(@RequestBody User params) {
         userService.updateUser(params);
         return R.ok();
     }
 
+    /**
+     * 用户列表
+     * @return
+     */
     @GetMapping(value = "/list")
     public R getUserList() {
         return R.ok().data(userService.list());

@@ -11,7 +11,6 @@ import java.util.Date;
 public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
-        //属性名称不是字段名称
         this.setFieldValByName("createdTime", new Date(), metaObject);
         this.setFieldValByName("isDeleted", DeleteEnum.NOT_DELETE.getCode(), metaObject);
     }

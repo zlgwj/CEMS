@@ -33,6 +33,15 @@ public class EventController {
     @Resource
     private NoticeService noticeService;
 
+    /**
+     * 分页查询所有赛事
+     *
+     * @param current
+     * @param pageSize
+     * @param state
+     * @param eventName
+     * @return
+     */
     @GetMapping(value = "/page")
     public R list(@RequestParam(required = false) Integer current,
                   @RequestParam(required = false) Integer pageSize,
@@ -52,23 +61,45 @@ public class EventController {
         return R.ok().data(aPage);
     }
 
+    /**
+     * 按树形查询所有赛事
+     *
+     * @return
+     */
     @GetMapping("/tree")
     public R listAsTree() {
         List<TreeVo> treeVoList = eventService.listAsTree();
         return R.ok().data(treeVoList);
     }
 
+    /**
+     * 按树形查询所有可报名赛事
+     *
+     * @return
+     */
     @GetMapping("/tree/registrable")
     public R listRegistrableAsTree() {
         List<TreeVo> treeVoList = eventService.listRegistrableAsTree();
         return R.ok().data(treeVoList);
     }
 
+    /**
+     * 根据id获取赛事
+     *
+     * @param id
+     * @return
+     */
     @GetMapping(value = "/{id}")
     public R getById(@PathVariable("id") String id) {
         return R.ok().data(eventService.getById(id));
     }
 
+    /**
+     * 创建赛事
+     *
+     * @param params
+     * @return
+     */
     @PostMapping(value = "/create")
     public R create(@RequestBody Event params) {
         eventService.saveEvent(params);
@@ -76,12 +107,24 @@ public class EventController {
         return R.ok();
     }
 
+    /**
+     * 根据id列表批量删除赛事
+     *
+     * @param ids
+     * @return
+     */
     @PostMapping(value = "/delete")
     public R delete(@RequestBody List<String> ids) {
         eventService.removeBatchByIds(ids);
         return R.ok();
     }
 
+    /**
+     * 根性赛事
+     *
+     * @param params
+     * @return
+     */
     @PostMapping(value = "/update")
     public R update(@RequestBody Event params) {
         eventService.updateById(params);

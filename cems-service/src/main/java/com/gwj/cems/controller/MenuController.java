@@ -21,6 +21,11 @@ public class MenuController {
     @Resource
     RedisUtil redisUtil;
 
+    /**
+     * 根据登录用户获取菜单
+     *
+     * @return
+     */
     @GetMapping(value = "/get")
     public R getMenu() {
 

@@ -27,35 +27,68 @@ public class NoticeController {
     @Resource
     private NoticeService noticeService;
 
+    /**
+     * 根据登录用户获取未读的公告列表
+     *
+     * @return
+     */
     @GetMapping("/list")
     public R list() {
         List<Notice> list = noticeService.getListByUser();
         return R.ok().data(list);
     }
 
+    /**
+     * 发布公告
+     *
+     * @param notice
+     * @return
+     */
     @PostMapping("/publish")
     public R publish(@RequestBody Notice notice) {
         noticeService.publish(notice);
         return R.ok();
     }
 
+    /**
+     * 修改公告
+     * @param notice
+     * @return
+     */
     @PostMapping("/update")
     public R update(@RequestBody Notice notice) {
         noticeService.updateById(notice);
         return R.ok();
     }
 
+    /**
+     * 根据id获取公告
+     * @param id
+     * @return
+     */
     @GetMapping("/byId/{id}")
     public R getById(@PathVariable("id") String id) {
         return R.ok().data(noticeService.getById(id));
     }
 
+    /**
+     * 删除公告
+     * @param ids
+     * @return
+     */
     @PostMapping("/delete")
     public R remove(@RequestBody List<String> ids) {
         noticeService.removeByIds(ids);
         return R.ok();
     }
 
+    /**
+     * 分页查询所有公告
+     * @param current
+     * @param pageSize
+     * @param title
+     * @return
+     */
     @GetMapping(value = "/page")
     public R list(@RequestParam(required = false) Integer current,
                   @RequestParam(required = false) Integer pageSize,

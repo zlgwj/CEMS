@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+/**
+ * 数据统计（数据可视化）
+ */
 @RestController
 @RequestMapping("/data")
 public class DataController {
@@ -19,12 +22,21 @@ public class DataController {
     @Resource
     private EventService eventService;
 
+    /**
+     * 根据性别统计报名信息
+     */
+
     @GetMapping("/gender")
     public R getGenderData() {
         Integer[] data = registrationInfoService.collectGender();
         return R.ok().data(data);
     }
 
+    /**
+     * 按比赛类型（田径赛）统计报名信息
+     *
+     * @return
+     */
     @GetMapping("/tj")
     public R getTJData() {
 
