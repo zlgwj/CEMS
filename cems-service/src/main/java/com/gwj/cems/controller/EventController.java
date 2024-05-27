@@ -115,7 +115,7 @@ public class EventController {
      */
     @PostMapping(value = "/delete")
     public R delete(@RequestBody List<String> ids) {
-        eventService.removeBatchByIds(ids);
+        eventService.removeEventBatchByIds(ids);
         return R.ok();
     }
 

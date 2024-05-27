@@ -22,4 +22,6 @@ public interface EventService extends IService<Event> {
     void autoUpdateState();
 
     List<TreeVo> listRegistrableAsTree();
+
+    void removeEventBatchByIds(List<String> ids);
 }

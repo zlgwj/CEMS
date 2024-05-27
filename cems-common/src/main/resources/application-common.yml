@@ -44,4 +44,4 @@ spring:
 notice:
   title: 管理员发布了赛事 \n【%s】
   desc: 点击跳转
-  link: "#/competitionManage/index"
+  link: "#/applyManage/index"

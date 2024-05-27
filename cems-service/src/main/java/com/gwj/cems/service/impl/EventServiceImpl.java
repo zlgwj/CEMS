@@ -5,15 +5,19 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gwj.cems.mapper.EventMapper;
 import com.gwj.cems.pojo.entity.Event;
+import com.gwj.cems.pojo.entity.Program;
 import com.gwj.cems.pojo.vo.TreeVo;
 import com.gwj.cems.service.EventService;
+import com.gwj.cems.service.ProgramService;
 import com.gwj.common.enums.EventStateEnum;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 赛事 服务实现类
@@ -23,6 +27,10 @@ import java.util.List;
  */
 @Service
 public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements EventService {
+
+
+    @Resource
+    private ProgramService programService;
 
     /**
      * 保存赛事
@@ -125,5 +133,19 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
             result.add(new TreeVo(entry.getKey() + "年", "", entry.getValue()));
         });
         return result;
+    }
+
+    @Override
+    public void removeEventBatchByIds(List<String> ids) {
+        ids.forEach(id -> {
+//            查出来赛事拥有的项目
+            List<Program> list = programService.list(new LambdaQueryWrapper<Program>().eq(Program::getEventGuid, id));
+//            取出项目的id
+            List<String> collect = list.stream().map(Program::getGuid).collect(Collectors.toList());
+//            删除项目
+            programService.removeBatchByIds(collect);
+//            删除赛事
+            removeById(id);
+        });
     }
 }
